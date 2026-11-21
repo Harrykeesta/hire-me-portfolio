@@ -6,7 +6,7 @@ import { readFileSync, existsSync } from "node:fs";
 if (!existsSync("content.js")) { console.log("No content.js here, nothing personal to check against."); process.exit(0); }
 const { default: c } = await import(new URL("../content.js", import.meta.url));
 const host = (c.site.url || "").replace(/^https?:\/\//, "").replace(/\/.*$/, "");
-const needles = [c.person.name, c.person.email, c.person.linkedin, host, host.split(".")[0], ...(c.stories || []).map((k) => k.where.split(" · ")[0])]
+const needles = [c.person.name, c.person.email, c.person.linkedin, host, host.split(".")[0], ...(c.stories || []).map((k) => k.where.split(" · ")[0]), ...(c.clients?.names || [])]
   .filter(Boolean).map((s) => s.toLowerCase());
 const files = execSync("git ls-files --cached --others --exclude-standard", { encoding: "utf8" }).split("\n").filter(Boolean);
 let bad = 0;

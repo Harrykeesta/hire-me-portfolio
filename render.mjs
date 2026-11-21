@@ -37,17 +37,26 @@ export function render(c, { hasOg = false } = {}) {
     name: p.name,
     description: c.site.description,
     url: siteUrl || undefined,
-    sameAs: [p.linkedin, ...c.services.platforms.map((x) => x.url)].filter(Boolean),
+    jobTitle: p.role,
+    sameAs: [p.linkedin, ...(c.platforms?.items || []).map((x) => x.url)].filter(Boolean),
+    knowsAbout: ["NetSuite", "EDI", "Order-to-cash", "Celigo", "Shopify", "Zapier", "Make", "Monday.com"],
     address: { "@type": "PostalAddress", addressLocality: p.region, addressCountry: "US" },
   };
 
   const nav = [
-    ["stories", "Stories"],
-    ["how-i-work", "How I work"],
-    ["ai", "AI"],
+    ["services", "Services"],
+    ["how-it-works", "How it works"],
+    ["stories", "Results"],
     ["about", "About"],
-    ["projects", "Projects"],
+    ["hire", "Hire me"],
   ];
+
+  const plats = c.platforms?.items || [];
+  const livePlats = plats.filter((x) => x.url);
+  const platCard = (x) =>
+    x.url
+      ? `<a class="plat" href="${esc(x.url)}" rel="me noopener" target="_blank"><span class="plat__name">${esc(x.name)}</span><span class="plat__best">${esc(x.best)}</span><span class="plat__go">View my profile ↗</span></a>`
+      : `<div class="plat plat--soon"><span class="plat__name">${esc(x.name)}</span><span class="plat__best">${esc(x.best)}</span><span class="plat__go">Profile coming soon</span></div>`;
 
   const storyHtml = (k, i, all) => `
     <article class="story" id="story-${esc(k.id)}" role="tabpanel" aria-labelledby="tab-${esc(k.id)}">
@@ -104,7 +113,7 @@ export function render(c, { hasOg = false } = {}) {
     <div class="wrap top__in">
       <a class="brand" href="#top" aria-label="${esc(p.name)}, back to top"><span class="brand__mark">${esc(c.site.monogram)}</span><span class="brand__name">${esc(p.name)}</span></a>
       <nav class="top__nav" aria-label="Sections">${list(nav, ([id, label]) => `<a href="#${id}">${label}</a>`)}</nav>
-      <a class="btn btn--hire" href="#contact">Say hello</a>
+      <a class="btn btn--hire" href="#contact">Get a quote</a>
     </div>
   </header>
 
@@ -126,11 +135,65 @@ export function render(c, { hasOg = false } = {}) {
             <p>${esc(c.now.text)}</p>
           </div>
           <div class="cta">
-            <a class="btn btn--primary js-email" ${emailBits} href="#contact">Email me</a>
-            <a class="btn" href="${esc(p.resume)}">My resume <span class="btn__meta">PDF</span></a>
+            <a class="btn btn--primary js-email" ${emailBits} href="#contact">Tell me what's broken</a>
+            ${livePlats.length ? list(livePlats.slice(0, 2), (x) => `<a class="btn" href="${esc(x.url)}" rel="me noopener" target="_blank">Hire me on ${esc(x.name)} ↗</a>`) : `<a class="btn" href="#services">See what I fix</a>`}
             <a class="btn btn--quiet" href="${esc(p.linkedin)}" rel="me noopener" target="_blank">LinkedIn ↗</a>
           </div>
         </div>
+      </div>
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <section class="section section--tight" id="hire" aria-labelledby="hire-h">
+      <div class="wrap">
+        <div class="section__head">
+          <h2 id="hire-h">${esc(c.platforms.title)}</h2>
+          <p>${esc(c.platforms.intro)}</p>
+        </div>
+        <div class="plats">${list(plats, platCard)}
+          <a class="plat plat--direct js-email" ${emailBits} href="#contact"><span class="plat__name">Direct</span><span class="plat__best">Best if you already know what you need. Email me and I'll send a fixed-price quote.</span><span class="plat__go">Email me →</span></a>
+        </div>
+      </div>
+    </section>
+    <section class="section section--alt" id="services" aria-labelledby="services-h">
+      <div class="wrap">
+        <div class="section__head">
+          <h2 id="services-h">${esc(c.services.title)}</h2>
+          <p>${esc(c.services.intro)}</p>
+        </div>
+        <ul class="services">${list(
+          c.services.items,
+          (x) => `<li><h3>${esc(x.title)}</h3><p>${esc(x.body)}</p><p class="services__fit">${esc(x.fit)}</p><p class="services__tools">${esc(x.tools)}</p></li>`
+        )}</ul>
+        <div class="clients">
+          <h3 class="label">${esc(c.clients.title)}</h3>
+          <ul class="clients__list">${list(c.clients.names, (n) => `<li>${esc(n)}</li>`)}</ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how-it-works" aria-labelledby="how-h">
+      <div class="wrap">
+        <div class="section__head">
+          <h2 id="how-h">${esc(c.process.title)}</h2>
+        </div>
+        <ol class="steps">${list(
+          c.process.steps,
+          (x, i) => `<li><span class="steps__n" aria-hidden="true">${i + 1}</span><h3>${esc(x.title)}</h3><p>${esc(x.body)}</p></li>`
+        )}</ol>
       </div>
     </section>
 
@@ -143,24 +206,11 @@ export function render(c, { hasOg = false } = {}) {
         )}</ul>
       </div>
     </section>
-
-    <section class="section" id="journey" aria-labelledby="journey-h">
-      <div class="wrap">
-        <div class="section__head">
-          <h2 id="journey-h">How I got here</h2>
-        </div>
-        <ol class="journey">${list(
-          c.journey,
-          (j) => `<li><p class="journey__when">${esc(j.when)}</p><h3>${esc(j.title)}</h3><p>${esc(j.body)}</p></li>`
-        )}</ol>
-      </div>
-    </section>
-
     <section class="section section--alt" id="stories" aria-labelledby="stories-h">
       <div class="wrap">
         <div class="section__head">
-          <h2 id="stories-h">A few stories from work</h2>
-          <p>What was broken, what I did about it, and what I learned.</p>
+          <h2 id="stories-h">Results, in plain words</h2>
+          <p>What was broken, what I did about it, and how it turned out.</p>
         </div>
         <div class="tabs" role="tablist" aria-label="Stories">${list(
           c.stories,
@@ -169,8 +219,7 @@ export function render(c, { hasOg = false } = {}) {
         <div class="stories">${c.stories.map(storyHtml).join("")}</div>
       </div>
     </section>
-
-    <section class="section" id="how-i-work" aria-labelledby="work-h">
+    <section class="section section--alt" id="how-i-work" aria-labelledby="work-h">
       <div class="wrap">
         <div class="section__head">
           <h2 id="work-h">How I work</h2>
@@ -181,8 +230,7 @@ export function render(c, { hasOg = false } = {}) {
         )}</ul>
       </div>
     </section>
-
-    <section class="section section--alt" id="ai" aria-labelledby="ai-h">
+    <section class="section" id="ai" aria-labelledby="ai-h">
       <div class="wrap">
         <div class="section__head">
           <h2 id="ai-h">How I use AI</h2>
@@ -191,8 +239,18 @@ export function render(c, { hasOg = false } = {}) {
         <ul class="ai">${list(c.ai.items, (x) => `<li><h3>${esc(x.title)}</h3><p>${esc(x.body)}</p></li>`)}</ul>
       </div>
     </section>
-
-    <section class="section" id="about" aria-labelledby="about-h">
+    <section class="section section--alt" id="journey" aria-labelledby="journey-h">
+      <div class="wrap">
+        <div class="section__head">
+          <h2 id="journey-h">How I got here</h2>
+        </div>
+        <ol class="journey">${list(
+          c.journey,
+          (j) => `<li><p class="journey__when">${esc(j.when)}</p><h3>${esc(j.title)}</h3><p>${esc(j.body)}</p></li>`
+        )}</ol>
+      </div>
+    </section>
+    <section class="section section--alt" id="about" aria-labelledby="about-h">
       <div class="wrap about">
         <div class="about__text">
           <h2 id="about-h">About me</h2>
@@ -208,35 +266,18 @@ export function render(c, { hasOg = false } = {}) {
         </div>
       </div>
     </section>
-
-    <section class="section section--alt" id="projects" aria-labelledby="proj-h">
-      <div class="wrap">
-        <div class="section__head">
-          <h2 id="proj-h">${esc(c.services.title)}</h2>
-          <p>${esc(c.services.intro)}</p>
-        </div>
-        <ul class="services">${list(c.services.items, (s) => `<li><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p></li>`)}</ul>
-        <div class="platforms">
-          <span class="label">Find me on</span>
-          ${list(c.services.platforms, (x) =>
-            x.url
-              ? `<a class="btn btn--small" href="${esc(x.url)}" rel="me noopener" target="_blank">${esc(x.name)} ↗</a>`
-              : `<span class="btn btn--small btn--soon">${esc(x.name)} <span class="btn__meta">soon</span></span>`
-          )}
-        </div>
-      </div>
-    </section>
-
     <section class="contact" id="contact" aria-labelledby="contact-h">
       <div class="wrap contact__in">
         <div>
           <h2 id="contact-h">${esc(c.contact.title)}${sparkle("sparkle sparkle--contact")}</h2>
           <p class="contact__lede">${esc(c.contact.text)}</p>
+          ${c.contact.also ? `<p class="contact__also">${esc(c.contact.also)} <a href="${esc(p.resume)}">Resume (PDF)</a></p>` : ""}
         </div>
         <div class="contact__card">
           <p class="label">Email</p>
           <p class="contact__email"><a class="js-email" ${emailBits} href="#contact">${emailText}</a>
             <button type="button" class="copy js-copy" ${emailBits}>Copy</button></p>
+          ${livePlats.length ? `<p class="label">Hire me on</p><p class="contact__links">${list(livePlats, (x) => `<a href="${esc(x.url)}" rel="me noopener" target="_blank">${esc(x.name)} ↗</a>`)}</p>` : ""}
           <p class="label">Elsewhere</p>
           <p class="contact__links">
             <a href="${esc(p.linkedin)}" rel="me noopener" target="_blank">LinkedIn ↗</a>

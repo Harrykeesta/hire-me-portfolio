@@ -289,3 +289,44 @@ html:not(.js) .pager { display: none; }
 
 .offclock { border-radius: var(--round); border: 2px solid var(--ink); border-top-width: 2px; box-shadow: 4px 4px 0 var(--gold); }
 .contact__card { border-radius: var(--round); box-shadow: 6px 6px 0 var(--scarlet); }
+
+/* Consultant sections: where to hire me, services, clients, steps */
+.section--tight { padding-block: clamp(36px, 5vw, 56px); }
+.plats { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
+.plat { display: grid; gap: 8px; align-content: start; padding: 20px; min-height: 44px; border: 2px solid var(--ink); border-radius: var(--round); background: var(--surface); color: var(--ink); text-decoration: none; box-shadow: 4px 4px 0 var(--ink); transition: transform .12s, box-shadow .12s; }
+a.plat:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--scarlet); }
+.plat__name { font: 800 1.75rem/1 var(--display); text-transform: uppercase; letter-spacing: .01em; }
+.plat__best { color: var(--muted); font-size: 0.9375rem; }
+.plat__go { margin-top: 4px; font-weight: 700; color: var(--scarlet); }
+.plat--soon { border-style: dashed; box-shadow: none; }
+.plat--soon .plat__go { color: var(--muted); font-weight: 600; }
+.plat--direct { background: var(--ink); color: var(--paper); border-color: var(--ink); box-shadow: 4px 4px 0 var(--scarlet); }
+.plat--direct .plat__best { color: color-mix(in srgb, var(--paper) 78%, var(--ink)); }
+.plat--direct .plat__go { color: var(--paper); }
+
+.services { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.services li { gap: 10px; padding: 24px; }
+.services h3 { font-size: 1.5rem; }
+.services__fit { padding: 10px 12px; border-radius: 10px; background: var(--tint-gold); font-size: 0.9375rem; }
+.services__tools { font-size: 0.8125rem; color: var(--muted); font-weight: 600; }
+
+.clients { margin-top: 40px; display: grid; gap: 14px; }
+.clients__list { display: flex; flex-wrap: wrap; gap: 10px; }
+.clients__list li { padding: 8px 14px; border: 2px solid var(--ink); border-radius: 999px; background: var(--surface); font: 700 1.0625rem/1.1 var(--display); letter-spacing: .02em; text-transform: uppercase; }
+
+.steps { display: grid; gap: 20px; counter-reset: none; }
+@media (min-width: 820px) { .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; } }
+.steps li { display: grid; gap: 8px; align-content: start; padding: 22px; border-radius: var(--round); background: var(--tint-blue); }
+.steps li:nth-child(2) { background: var(--tint-gold); }
+.steps li:nth-child(3) { background: var(--tint-red); }
+.steps__n { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--ink); color: var(--paper); font: 800 1.5rem/1 var(--display); box-shadow: 3px 3px 0 var(--scarlet); }
+.steps h3 { font: 700 1.5rem/1.1 var(--display); }
+
+.contact__also { margin-top: 16px; font-size: 0.9375rem; color: color-mix(in srgb, var(--paper) 78%, var(--ink)); }
+.contact__also a { color: var(--paper); font-weight: 600; }
+/* Even rows: 4 hire cards = 1 x 4 / 2 x 2 / 1 column; 4 services = 2 x 2 / 1 column */
+.plats { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 600px) { .plats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .plats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.services { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 760px) { .services { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

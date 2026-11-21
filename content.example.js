@@ -6,7 +6,7 @@
 export default {
   site: {
     url: "https://example.com",
-    title: "Jordan Avery | Product Leader",
+    title: "Jordan Avery | Product Consultant",
     description:
       "Hi, I'm Jordan: product leader in Denver. I turn messy customer problems into products people love to use.",
     monogram: "JA",
@@ -18,7 +18,7 @@ export default {
   person: {
     name: "Jordan Avery",
     hello: "Hi, I'm",
-    role: "Product Leader",
+    role: "Product Consultant",
     headline: "I turn messy customer problems into products people love to use.",
     intro: [
       "Write two or three sentences about how you got here. Keep it in your own voice, like you'd say it over coffee.",
@@ -36,8 +36,32 @@ export default {
   },
 
   now: {
-    status: "Open to work",
-    text: "Looking for my next product role: Director of Product or Group PM. Remote in the U.S., or hybrid in Denver.",
+    status: "Taking new clients",
+    text: "Fixed-price quotes and a written scope before I start. Remote anywhere in the U.S.",
+  },
+
+  // Where clients can hire you. Empty links show as "Profile coming soon".
+  platforms: {
+    title: "Hire me where you already work",
+    intro: "Book me through a freelance site you trust, or email me directly.",
+    items: [
+      { name: "Upwork", url: "", best: "Best for bigger projects, hourly or fixed price." },
+      { name: "Fiverr", url: "", best: "Best for fixed packages you can start today." },
+    ],
+  },
+
+  process: {
+    title: "How it works",
+    steps: [
+      { title: "Tell me the problem", body: "A few sentences is enough." },
+      { title: "Get a fixed price", body: "A written scope and a price, before any work starts." },
+      { title: "I deliver and document it", body: "Updates as I go, and notes your team can use." },
+    ],
+  },
+
+  clients: {
+    title: "Teams I've worked with",
+    names: ["Example SaaS Co.", "Example Startup", "Example Agency"],
   },
 
   impact: [
@@ -109,22 +133,18 @@ export default {
   },
 
   services: {
-    title: "Need a hand with a project?",
-    intro: "If you're not hiring full-time, I also take short, fixed-scope projects.",
+    title: "What I do",
+    intro: "Each project gets a clear scope and a fixed price.",
     items: [
-      { title: "Product audit", body: "A two-week review of your product, roadmap and metrics." },
-      { title: "Roadmap reset", body: "A roadmap your teams can actually follow." },
-    ],
-    // Paste each profile link once it's live. Empty links show as "soon".
-    platforms: [
-      { name: "Upwork", url: "" },
-      { name: "Fiverr", url: "" },
+      { title: "Product audit", body: "A two-week review of your product, roadmap and metrics.", fit: "Good fit if growth stalled and nobody agrees why.", tools: "Analytics · Interviews" },
+      { title: "Roadmap reset", body: "A roadmap your teams can actually follow.", fit: "Good fit if every team has a different list of priorities.", tools: "Planning · Prioritization" },
     ],
   },
 
   contact: {
-    title: "Say hello.",
-    text: "Hiring for a product leader, or just want to compare notes? I read every message and write back.",
+    title: "Tell me the problem.",
+    text: "A few sentences is enough. I'll reply with what it takes and a fixed price.",
+    also: "Also open to the right full-time role.",
   },
 
   footer: { templateUrl: "" },
