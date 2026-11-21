@@ -10,7 +10,7 @@ A one-page personal website for job hunting, written in your own voice: a round 
 
 ## Make it yours
 
-You need Node 18 or newer and a free Cloudflare account.
+Click **Use this template** at the top of this page (or fork it) to get your own copy, then clone it. You need Node 18 or newer and a free Cloudflare account.
 
 ```bash
 npm install
