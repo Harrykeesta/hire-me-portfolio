@@ -1,6 +1,6 @@
 # Hire-me portfolio
 
-A one-page personal website for job hunting, written in your own voice: a round photo and your name up top, what roles you want, your track record in numbers, how you got here, a few short stories from work, how you work, an about-me, short projects you take on freelance sites, and a contact section. Built to get you hired.
+A one-page personal website for job hunting, written in your own voice: a round photo and your name up top, where to hire you (Upwork, Fiverr or direct), what you fix, how a project works, your track record in numbers, short stories from work, how you got here, an about-me, and a contact section. Built for consultants and job seekers alike.
 
 - **Free to host.** It runs on Cloudflare Workers as static files: no server, no database, no monthly bill. Only the domain costs money (about $10 a year for a `.com`).
 - **One file to edit.** Everything on the page comes from `content.js`.
@@ -45,7 +45,7 @@ Your site is live at `portfolio.<your-subdomain>.workers.dev`.
 
 ## Freelance links
 
-In `content.js` under `services.platforms`, paste each profile link (Upwork, Fiverr and so on). Any platform without a link shows as "soon" until you add one.
+In `content.js` under `platforms.items`, paste each profile link (Upwork, Fiverr and so on). A platform without a link shows as "Profile coming soon"; once it has one, it becomes a button in the hire-me cards, the top of the page and the contact section.
 
 ## License
 
