@@ -1,10 +1,10 @@
 # Hire-me portfolio
 
-A one-page personal website for job hunting: a hero with who you are and what roles you want, your track record in numbers, case studies that lead with results, how you work, your experience, short projects you take on freelance sites, and a contact section. Built to get you hired.
+A one-page personal website for job hunting, written in your own voice: a round photo and your name up top, what roles you want, your track record in numbers, how you got here, a few short stories from work, how you work, an about-me, short projects you take on freelance sites, and a contact section. Built to get you hired.
 
 - **Free to host.** It runs on Cloudflare Workers as static files: no server, no database, no monthly bill. Only the domain costs money (about $10 a year for a `.com`).
 - **One file to edit.** Everything on the page comes from `content.js`.
-- **Private by design.** Your `content.js`, resume and headshot are in `.gitignore`, and `npm run check-template` blocks a push that contains your personal details.
+- **Private by design.** Your `content.js`, resume and headshot are in `.gitignore`, and `npm run check-template` checks the files you would publish for your name, email, domain and employers. Run it before you push.
 - **No ads, no tracking, no cookies.** Your email is assembled in the browser so basic scrapers can't pick it up.
 - **Works everywhere.** Phones from 320px wide up, light and dark mode, keyboard and screen readers.
 
@@ -18,7 +18,7 @@ cp content.example.js content.js
 cp wrangler.example.jsonc wrangler.jsonc
 ```
 
-1. Edit `content.js`: your name, headline, roles you want, numbers, case studies, links.
+1. Edit `content.js`: your name, headline, roles you want, numbers, stories, links.
 2. Put your resume in `public/` (for example `public/resume.pdf`) and set `person.resume` to `/resume.pdf`.
 3. Optional: a square headshot in `public/headshot.jpg` (set `person.photo` to `/headshot.jpg`) and a 1200×630 link preview image at `public/og.png`. Set `site.photoPlaceholders` to `false` before you go live.
 4. Preview at http://localhost:8787:
