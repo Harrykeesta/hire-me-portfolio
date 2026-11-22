@@ -329,7 +329,11 @@ a.plat:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--sca
 @media (min-width: 600px) { .plats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1000px) { .plats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .services { grid-template-columns: minmax(0, 1fr); }
-@media (min-width: 760px) { .services { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 760px) {
+  .services { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* Odd number of services: the first one runs full width as the featured offer. */
+  .services li:first-child:nth-last-child(odd) { grid-column: 1 / -1; }
+}
 
 /* Icons inside buttons */
 .btn svg { width: 18px; height: 18px; flex: none; }
