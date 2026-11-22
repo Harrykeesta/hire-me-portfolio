@@ -1,16 +1,27 @@
-// Cloudflare Workers, static assets only: free, no server code to run.
-// Copy to wrangler.jsonc (ignored by git) and set your own name and domain.
+// Cloudflare Workers: static site + a tiny contact-form handler (src/worker.js). Free plan.
+// Copy to wrangler.jsonc (ignored by git) and set your own name, domain and email.
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "portfolio",
-  "compatibility_date": "2026-11-01",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-05-01",
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     "not_found_handling": "404-page",
-    "html_handling": "auto-trailing-slash"
+    "html_handling": "auto-trailing-slash",
+    "run_worker_first": ["/api/*"]
   },
-  "workers_dev": true
-  // After your domain is on Cloudflare, uncomment and set it, then `npm run deploy`:
+  "workers_dev": true,
+  // Contact form: turn on Email Routing for your domain in Cloudflare, verify your inbox as a
+  // destination address, then put that address in both places below.
+  "send_email": [{ "name": "CONTACT", "destination_address": "you@example.com" }],
+  "vars": {
+    "SITE_NAME": "example.com",
+    "CONTACT_FROM": "contact@example.com",
+    "CONTACT_TO": "you@example.com"
+  }
+  // After your domain is on Cloudflare, add it:
   // ,"routes": [
   //   { "pattern": "yourname.com", "custom_domain": true },
   //   { "pattern": "www.yourname.com", "custom_domain": true }

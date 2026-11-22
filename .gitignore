@@ -9,4 +9,5 @@ wrangler.jsonc
 public/*.pdf
 public/headshot.*
 public/og.png
+public/apple-touch-icon.png
 !public/.gitkeep

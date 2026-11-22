@@ -141,6 +141,17 @@ export default {
     ],
   },
 
+  share: {
+    title: "Know someone who needs this?",
+    text: "Send this page to a colleague in one tap.",
+    message: "Worth a look:",
+  },
+  booking: { url: "", label: "Book a 20-minute call" },
+  contactForm: { enabled: true, turnstileSiteKey: "" },
+  vcard: true,
+  analytics: { ga4: "", cloudflareToken: "" },
+  verification: { bing: "", google: "" },
+
   contact: {
     title: "Tell me the problem.",
     text: "A few sentences is enough. I'll reply with what it takes and a fixed price.",

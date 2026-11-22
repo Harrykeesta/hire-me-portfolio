@@ -11,7 +11,8 @@ const dist = new URL("dist/", root);
 const esc = (s = "") =>
   String(s).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]);
 const hasOg = existsSync(new URL("public/og.png", root));
-const { html, notFound, favicon, siteUrl } = render(c, { hasOg });
+const hasIcon = existsSync(new URL("public/apple-touch-icon.png", root));
+const { html, notFound, favicon, siteUrl, vcf, vcfPath } = render(c, { hasOg, hasIcon });
 
 rmSync(dist, { recursive: true, force: true });
 mkdirSync(dist, { recursive: true });
@@ -21,6 +22,7 @@ cpSync(new URL("src/app.js", root), new URL("app.js", dist));
 writeFileSync(new URL("index.html", dist), html);
 writeFileSync(new URL("404.html", dist), notFound);
 writeFileSync(new URL("favicon.svg", dist), favicon);
+if (vcfPath) writeFileSync(new URL(vcfPath.slice(1), dist), vcf);
 writeFileSync(new URL("robots.txt", dist), `User-agent: *\nAllow: /\n${siteUrl ? `Sitemap: ${siteUrl}/sitemap.xml\n` : ""}`);
 if (siteUrl)
   writeFileSync(
@@ -29,7 +31,7 @@ if (siteUrl)
   );
 writeFileSync(
   new URL("_headers", dist),
-  `/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  X-Frame-Options: DENY\n`
+  `${vcfPath ? `${vcfPath}\n  Content-Type: text/vcard; charset=utf-8\n  Content-Disposition: attachment; filename="${vcfPath.slice(1)}"\n` : ""}/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  X-Frame-Options: DENY\n`
 );
 
 console.log(`Built dist/ from ${useOwn ? "content.js" : "content.example.js"}`);

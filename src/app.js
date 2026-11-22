@@ -57,4 +57,62 @@
     }, { rootMargin: "-40% 0px -55% 0px" });
     byId.forEach((_, id) => { const s = document.getElementById(id); if (s) io.observe(s); });
   }
+
+  // Analytics events (only if Google Analytics is on).
+  const track = (name, params = {}) => { try { window.gtag?.("event", name, params); } catch {} };
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("a, button");
+    if (!a) return;
+    if (a.dataset.share) track("share", { method: a.dataset.share, content_type: "page" });
+    else if (a.dataset.event) track(a.dataset.event);
+    else if (a.classList.contains("js-email")) track("email_click");
+    else if (a.classList.contains("plat")) track("platform_click", { platform: a.querySelector(".plat__name")?.textContent });
+    else if (a.href?.includes("linkedin.com/in/")) track("linkedin_profile_click");
+    else if (a.href?.endsWith(".pdf")) track("resume_download");
+  });
+
+  // Share: the phone's own share sheet where supported; copy link everywhere.
+  for (const b of $$(".js-native-share")) {
+    if (navigator.share) {
+      b.hidden = false;
+      b.addEventListener("click", () => {
+        navigator.share({ title: b.dataset.title, text: b.dataset.text, url: b.dataset.url }).then(() => track("share", { method: "native" })).catch(() => {});
+      });
+    }
+  }
+  for (const b of $$(".js-copy-link")) {
+    b.addEventListener("click", async () => {
+      const label = b.querySelector("span");
+      try { await navigator.clipboard.writeText(b.dataset.url); label.textContent = "Copied!"; }
+      catch { prompt("Copy this link:", b.dataset.url); }
+      setTimeout(() => (label.textContent = "Copy link"), 2000);
+    });
+  }
+
+  // Contact form: send without leaving the page.
+  const form = document.getElementById("cform");
+  if (form) {
+    const status = form.querySelector(".cform__status");
+    const btn = form.querySelector(".cform__send");
+    const sent = new URLSearchParams(location.search).get("sent");
+    if (sent) status.textContent = sent === "1" ? "Thanks! I'll reply with what it takes and a fixed price." : "That didn't go through. Please email me instead.";
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      btn.disabled = true; btn.textContent = "Sending…"; status.textContent = "";
+      form.classList.remove("is-error", "is-sent");
+      try {
+        const res = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
+        const out = await res.json().catch(() => ({ ok: false, message: "Something went wrong. Please email me instead." }));
+        status.textContent = out.message;
+        form.classList.add(out.ok ? "is-sent" : "is-error");
+        if (out.ok) { form.reset(); track("generate_lead", { method: "contact_form" }); }
+      } catch {
+        status.textContent = "No connection. Please try again or email me.";
+        form.classList.add("is-error");
+      }
+      btn.disabled = false; btn.textContent = "Send it";
+      window.turnstile?.reset?.();
+    });
+  }
 })();
